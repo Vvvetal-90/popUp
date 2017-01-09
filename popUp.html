@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Pop Up</title>
+	<style>
+		.modal_div{
+			width: 300px;
+			height: 300px;
+			border-radius: 5px;
+			border: 3px #000 solid;
+			background: #fff;
+			position: fixed;
+			top: 45%;
+			left: 50%;
+			margin-top: -150px;
+			margin-left: -150px;
+			display: none;
+			opacity: 0;
+			z-index: 5;
+			padding: 20px 10px;
+		}
+		.modal_div .modal_close{
+			width: 20px;
+			height: 20px;
+			font-size: 20px;
+			position: absolute;
+			top: 8px;
+			right: 12px;
+			cursor: pointer;
+			display: block;
+		}
+		#overlay{
+			z-index: 3;
+			position: fixed;
+			background-color: #000;
+			opacity: 0.8;
+			-moz-opacity: 0.8;
+			filter: alpha(opacity=80);
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			cursor: pointer;
+			display: none;
+		}
+	</style>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+
+	<div id="popup_1" class="modal_div"> <!-- #modal_id -->
+		<span class="modal_close"><i class="fa fa-times" aria-hidden="true"></i></span>
+		<!-- here modal content -->
+	</div>
+	<a href="#popup_1" class="button call-us open_modal">Open PopUp</a><!-- link with #modal_id-->
+	<div id="overlay"></div><!-- overlay single by page -->
+	<!-- here jQuery -->
+	<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script>
+  	$(function() {
+		"use strict"
+		//PopUp
+		var overlay = $('#overlay'); // #overlay must be one per page
+	  var open_modal = $('.open_modal'); //class for modal links
+	  var close = $('.modal_close, #overlay'); // modal close
+	  var modal = $('.modal_div'); // all hidden modal windows
+
+	   open_modal.click( function(event){ // wait for click open_modal
+	       event.preventDefault(); // dissalow standart link event
+	       var div = $(this).attr('href'); // take the line with the selector at the clicked link
+	       overlay.fadeIn(400, //show overlay
+	           function(){ // after the and of overlay showing
+	               $(div) // take the line with the selector and make of it an object jquery
+	                   .css('display', 'block') 
+	                   .animate({opacity: 1, top: '50%'}, 200); // slow animate show
+	       });
+	   });
+
+	   close.click( function(){ // wait for click
+	          modal // all modal
+	           .animate({opacity: 0, top: '45%'}, 200, // slow hidden
+	               function(){ 
+	                   $(this).css('display', 'none');
+	                   overlay.fadeOut(400); // hide substrate
+	               }
+	           );
+	   });
+	   //close popUp by ESC button
+	   $(document).bind('keydown', function(e) { 
+	      if (e.which == 27) {
+	        modal // all modal
+	         .animate({opacity: 0, top: '45%'}, 200, // slow hidden
+	             function(){ 
+	                 $(this).css('display', 'none');
+	                 overlay.fadeOut(400); // hide substrate
+	             }
+	         );
+	      }
+	  }); 
+	  //End PopUp
+	});
+
+  </script>
+</body>
+</html>
